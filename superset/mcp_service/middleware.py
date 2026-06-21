@@ -818,7 +818,7 @@ class RedisRateLimiter:
     ) -> tuple[bool, dict[str, Any]]:
         """Check if request should be rate limited using Redis sliding window."""
         current_time = time.time()
-        full_key = "%s%s" % (self._prefix, key)
+        full_key = f"{self._prefix}{key}"
 
         try:
             # Use Redis sorted set for sliding window
@@ -834,7 +834,7 @@ class RedisRateLimiter:
             )
 
             # Get count of requests in window
-            request_count = self._cache.get("%s:count" % full_key) or 0
+            request_count = self._cache.get(f"{full_key}:count") or 0
 
             # Rate limit info
             rate_limit_info = {
@@ -849,7 +849,7 @@ class RedisRateLimiter:
 
             # Increment counter with TTL
             new_count = (request_count or 0) + 1
-            self._cache.set("%s:count" % full_key, new_count, timeout=window)
+            self._cache.set(f"{full_key}:count", new_count, timeout=window)
 
             return False, rate_limit_info
 
