@@ -39,7 +39,7 @@ import zlib
 from collections.abc import Iterable, Iterator, Sequence
 from contextlib import closing, contextmanager
 from dataclasses import dataclass
-from datetime import timedelta
+from datetime import datetime, timedelta
 from email.mime.application import MIMEApplication
 from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
@@ -439,7 +439,7 @@ def cast_to_num(value: float | int | str | None) -> float | int | None:
 
     :param value: value to be converted to numeric representation
     :returns: value cast to `int` if value is all digits, `float` if `value` is
-              decimal value and `None`` if it can't be converted
+              decimal value and `None` if it can't be converted
     """
     if value is None:
         return None
@@ -453,8 +453,8 @@ def cast_to_num(value: float | int | str | None) -> float | int | None:
         return None
 
 
-def cast_to_boolean(value: Any) -> bool | None:
-    """Casts a value to an int/float
+def cast_to_boolean(value: bool | datetime | int | float | str | None) -> bool | None:
+    """Casts a value to a boolean
 
     >>> cast_to_boolean(1)
     True
